@@ -1,0 +1,58 @@
+####################################################
+# Syntax Coloring Map For GSMSIM300 Library
+####################################################
+
+####################################################
+# Datatypes (KEYWORD1)
+####################################################
+
+GSMSIM300	KEYWORD1
+
+####################################################
+# Methods and Functions (KEYWORD2)
+####################################################
+begin	KEYWORD2
+update	KEYWORD2
+checkSMS	KEYWORD2
+newSMS	KEYWORD2
+call	KEYWORD2
+hangup	KEYWORD2
+sendSMS	KEYWORD2
+readSMS	KEYWORD2
+deleteSMS	KEYWORD2
+deleteAllSMS	KEYWORD2
+deleteSMSAll	KEYWORD2
+listSMS	KEYWORD2
+getState	KEYWORD2
+
+numberIn	KEYWORD2
+numberOut	KEYWORD2
+messageIn	KEYWORD2
+messageOut	KEYWORD2
+
+####################################################
+# Constants and enums (LITERAL1)
+####################################################
+GSM_POWER_ON	LITERAL1
+GSM_POWER_ON_WAIT	LITERAL1
+GSM_SET_PIN	LITERAL1
+GSM_CHECK_CONNECTION	LITERAL1
+GSM_CHECK_CONNECTION_WAIT	LITERAL1
+GSM_CONNECTION_RESPONSE	LITERAL1
+GSM_RUNNING	LITERAL1
+GSM_POWER_OFF	LITERAL1
+GSM_POWER_OFF_WAIT	LITERAL1
+
+SMS_IDLE	LITERAL1
+SMS_MODE	LITERAL1
+SMS_ALPHABET	LITERAL1
+SMS_NUMBER	LITERAL1
+SMS_CONTENT	LITERAL1
+SMS_WAIT	LITERAL1
+
+CALL_IDLE	LITERAL1
+CALL_NUMBER	LITERAL1
+CALL_SETUP	LITERAL1
+CALL_SETUP_WAIT	LITERAL1
+CALL_RESPONSE	LITERAL1
+CALL_ACTIVE	LITERAL1
