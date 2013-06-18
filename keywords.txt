@@ -24,6 +24,7 @@ deleteAllSMS	KEYWORD2
 deleteSMSAll	KEYWORD2
 listSMS	KEYWORD2
 getState	KEYWORD2
+setState	KEYWORD2
 
 numberIn	KEYWORD2
 numberOut	KEYWORD2

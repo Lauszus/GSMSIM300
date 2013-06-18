@@ -72,6 +72,9 @@ public:
 	uint8_t getState() {
 		return gsmState;
 	}
+	void setState(uint8_t newState) {
+		gsmState = newState;
+	}
 	char numberIn[20], numberOut[20]; // You might have to adjust this - remember to include country code
 	char messageIn[50], messageOut[50];
 private:
