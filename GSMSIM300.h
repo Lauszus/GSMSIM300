@@ -52,6 +52,8 @@
 #define CALL_RESPONSE             4
 #define CALL_ACTIVE               5
 
+// TODO: Comment each function
+
 class GSMSIM300 {
 public:
 	GSMSIM300(const char *pinCode, uint8_t rx = 2, uint8_t tx = 3, uint8_t powerPin = 4, bool running = false);
@@ -76,7 +78,7 @@ public:
 		gsmState = newState;
 	}
 	char numberIn[20], numberOut[20]; // You might have to adjust this - remember to include country code
-	char messageIn[50], messageOut[50];
+	char messageIn[161], messageOut[161];
 private:
 	SoftwareSerial *gsm;
 
