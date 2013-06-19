@@ -482,9 +482,16 @@ void GSMSIM300::listSMS(const char *type, bool print) {
 #endif
 }
 
-void GSMSIM300::deleteSMSAll() {
+void GSMSIM300::deleteSMSAll(const char *type) {
     setSMSTextMode();
-    gsm->print(F("AT+CMGDA\r"));
+    gsm->print(F("AT+CMGDA=\""));
+    gsm->print(type);
+    gsm->print(F("\"\r"));
+
+#ifdef DEBUG
+    Serial.print(F("Deleted all messages of the following type: "));
+    Serial.println(type);
+#endif
 }
 
 void GSMSIM300::deleteSMS(char *index) {
@@ -501,6 +508,11 @@ void GSMSIM300::deleteSMS(char *index) {
     gsm->print(F("AT+CMGD="));
     gsm->print(index);
     gsm->print(F("\r"));
+
+#ifdef DEBUG
+    Serial.print(F("Deleted SMS at index: "));
+    Serial.println(index);
+#endif
 }
 
 //gsm->print(F("ATS0=001\r")); // Activate auto answer - 'RING' will be received on an incoming call

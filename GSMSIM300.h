@@ -125,8 +125,11 @@ public:
 	
 	void deleteSMS(char *index = NULL);
 
-	/** Deletes all messages stored on the SIM card. */
-	void deleteSMSAll();
+	/**
+	 * Deletes all messages of the corresponding type on the SIM card. You have to call this at some point or the SIM card will get full.
+	 * @param type Available ones are: "DEL READ", "DEL UNREAD", "DEL SENT", "DEL UNSENT", "DEL INBOX”, and "DEL ALL". Default to "DEL ALL".
+	 */
+	void deleteSMSAll(const char *type = "DEL ALL");
 
 	/**
 	 * List all messages stored on the SIM card.
