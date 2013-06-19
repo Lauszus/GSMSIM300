@@ -73,11 +73,13 @@ void GSMSIM300::update() {
     }
     if (checkString(incomingChar,errorString,&pErrorString)) {
         char error[5], i = 0;
-        do {
+        while (i < sizeof(error)-1) {
             error[i] = gsm->read();
-            if (error[i] != -1 && error[i] != ' ')
+            if (error[i] == '\r' || error[i] == '\0')
+                break;
+            else if (error[i] != -1 && error[i] != ' ')
                 i++;
-        } while (error[i] != '\r' && error[i] != '\0' && i < sizeof(error)-1);
+        }
         error[i] = '\0';
 
 #ifdef DEBUG
