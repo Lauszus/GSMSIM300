@@ -28,13 +28,16 @@ void loop() {
       else if (c == 'S')
         GSM.sendSMS(number, "You just received a SMS from a SIM300 GSM module :)"); // Send SMS
       else if (c == 'R')
-        GSM.readSMS(); // Read the last returned SMS
+        GSM.readSMS(); // Read the last received SMS
       else if (c == 'L')
         GSM.listSMS("ALL"); // List all messages
+      else if (c == 'D')
+        GSM.deleteSMSAll(); // Deletes all messages on the SIM card - this is useful as the SIM card has very limited storage capability
     }
     if (GSM.newSMS()) { // Check if a new SMS is received
       if (GSM.readSMS()) // Returns true if the number and message of the sender is successfully extracted from the SMS
         GSM.sendSMS(GSM.numberIn, "Automatic response from SIM300 GSM module"); // Sends a response to that number
+      GSM.deleteSMS(); // Delete the SMS again, as the SIM card has very limited storage capability
     }
   }
 }
