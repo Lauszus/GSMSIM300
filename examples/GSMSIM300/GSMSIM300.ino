@@ -32,9 +32,9 @@ void loop() {
       else if (c == 'L')
         GSM.listSMS("ALL"); // List all messages
     }
-    if(GSM.newSMS()) { // Check if a new SMS is received
-      if(GSM.readSMS()) // Returns true if the number and message of the sender is successfully extracted from the SMS
+    if (GSM.newSMS()) { // Check if a new SMS is received
+      if (GSM.readSMS()) // Returns true if the number and message of the sender is successfully extracted from the SMS
         GSM.sendSMS(GSM.numberIn, "Automatic response from SIM300 GSM module"); // Sends a response to that number
-    } 
+    }
   }
 }
