@@ -585,6 +585,7 @@ void GSMSIM300::powerOn() {
     digitalWrite(powerPin,HIGH);
     delay(2000);
 }
+
 void GSMSIM300::powerOff() {  
     digitalWrite(powerPin,LOW);
     delay(800);
