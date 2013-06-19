@@ -188,6 +188,7 @@ bool GSMSIM300::checkSMS() {
     if (readIndex) {
         if (incomingChar == '\r') { // End of index
             readIndex = false;
+            lastIndex[indexCounter] = '\0';
 #ifdef DEBUG
             Serial.print(F("Received SMS at index: "));
             Serial.println(lastIndex);
@@ -195,9 +196,7 @@ bool GSMSIM300::checkSMS() {
             return true;
         } else if (indexCounter < sizeof(lastIndex)-1) {
             //Serial.println(F("Storing index"));
-            lastIndex[indexCounter] = incomingChar;
-            lastIndex[indexCounter+1] = '\0';
-            indexCounter++;
+            lastIndex[indexCounter++] = incomingChar;
         } else {
 #ifdef DEBUG
             Serial.println(F("Index is too long"));
@@ -382,18 +381,13 @@ void GSMSIM300::setOutWaitingString(const char *str) {
 
 // TODO: Combine these two function
 bool GSMSIM300::checkGsmWaitingString() {
-    if(incomingChar != -1) {
-        if(incomingChar == *pGsmString) {
-            pGsmString++;
-            if(*pGsmString == '\0') {
+    if (checkString(incomingChar,gsmString,&pGsmString)) {
 #ifdef EXTRADEBUG
-                Serial.print(F("\r\nGSM Response success: "));
-                Serial.write((uint8_t*)gsmString, strlen(gsmString));
-                Serial.println();
+        Serial.print(F("\r\nGSM Response success: "));
+        Serial.write((uint8_t*)gsmString, strlen(gsmString));
+        Serial.println();
 #endif
-                return true;
-            }
-        }
+        return true;
     }
     if(millis() - gsmTimer > 10000) { // Only wait 10s for response    
         if(gsmState != GSM_RUNNING) {
@@ -407,18 +401,13 @@ bool GSMSIM300::checkGsmWaitingString() {
 }
 
 bool GSMSIM300::checkOutWaitingString() {
-    if(incomingChar != -1) {
-        if(incomingChar == *pOutString) {
-            pOutString++;
-            if(*pOutString == '\0') {
+    if (checkString(incomingChar,outString,&pOutString)) {
 #ifdef EXTRADEBUG
-                Serial.print(F("\r\nOut Response success: "));
-                Serial.write((uint8_t*)outString, strlen(outString));
-                Serial.println();
+        Serial.print(F("\r\nOut Response success: "));
+        Serial.write((uint8_t*)outString, strlen(outString));
+        Serial.println();
 #endif
-                return true;
-            }
-        }
+        return true;
     }
     return false;
 }
@@ -579,8 +568,7 @@ bool GSMSIM300::extractContent(char *buffer, uint8_t size, char beginChar, char 
             buffer[i] = '\0';
             return true;
         }
-        buffer[i] = c;
-        i++;
+        buffer[i++] = c;
         if (i >= size) {
 #ifdef DEBUG
             Serial.println(F("String is too large for the buffer"));
