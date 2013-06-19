@@ -72,17 +72,16 @@ void GSMSIM300::update() {
         gsmState = GSM_POWER_ON;
     }
     if (checkString(incomingChar,errorString,&pErrorString)) {
+#ifdef DEBUG
         char error[5], i = 0;
         while (i < sizeof(error)-1) {
             error[i] = gsm->read();
-            if (error[i] == '\r' || error[i] == '\0')
+            if (error[i] == '\r' || error[i] == '\n' || error[i] == '\0')
                 break;
             else if (error[i] != -1 && error[i] != ' ')
                 i++;
         }
         error[i] = '\0';
-
-#ifdef DEBUG
         Serial.print(F("The GSM module returned the following error: "));
         Serial.println(error);
 #endif
