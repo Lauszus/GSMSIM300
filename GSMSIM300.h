@@ -60,7 +60,6 @@ public:
 
 	void begin(uint32_t baud = 9600);
 	void update();
-	bool checkSMS();
 	bool newSMS() {
 		return newSms;
 	};
@@ -82,6 +81,7 @@ public:
 private:
 	SoftwareSerial *gsm;
 
+	void checkSMS();
 	void updateSMS();
 	void updateCall();
 	void setGsmWaitingString(const char *str);

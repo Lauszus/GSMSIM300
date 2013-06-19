@@ -145,16 +145,12 @@ void GSMSIM300::update() {
         case GSM_RUNNING:
             updateSMS();
             updateCall();
-            // TODO: Don't have to check for -1
-            if(incomingChar != -1) {
-                if (checkSMS()) // Return true if a new SMS is received
-                    newSms = true;
-                if (checkString(incomingChar,incomingCallString,&pIncomingCallString)) {
+            checkSMS(); // Check if a new SMS is received
+            if (checkString(incomingChar,incomingCallString,&pIncomingCallString)) {
 #ifdef DEBUG
-                    Serial.println(F("Incoming Call"));
+                Serial.println(F("Incoming Call"));
 #endif
-                    answer();
-                }
+                answer();
             }
             break;
 
@@ -182,34 +178,30 @@ void GSMSIM300::update() {
     }
 }
 
-bool GSMSIM300::checkSMS() {
+void GSMSIM300::checkSMS() {
     if (incomingChar == -1)
-        return false;
+        return;
     if (readIndex) {
         if (incomingChar == '\r') { // End of index
-            readIndex = false;
             lastIndex[indexCounter] = '\0';
+            readIndex = false;
+            newSms = true;
 #ifdef DEBUG
             Serial.print(F("Received SMS at index: "));
             Serial.println(lastIndex);
 #endif
-            return true;
-        } else if (indexCounter < sizeof(lastIndex)-1) {
-            //Serial.println(F("Storing index"));
+        } else if (indexCounter < sizeof(lastIndex)-1)
             lastIndex[indexCounter++] = incomingChar;
-        } else {
+        else {
 #ifdef DEBUG
             Serial.println(F("Index is too long"));
 #endif
             readIndex = false;
         }
-    }
-    else if (checkString(incomingChar,receiveSmsString,&pReceiveSmsString)) {
+    } else if (checkString(incomingChar,receiveSmsString,&pReceiveSmsString)) {
         readIndex = true;
         indexCounter = 0;
-        //Serial.println(F("Received SMS"));
     }
-    return false;
 }
 
 // I know this might seem confusing, but in order to change the pointer I have to create a pointer to a pointer
