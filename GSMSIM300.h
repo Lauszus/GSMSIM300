@@ -57,6 +57,7 @@
 class GSMSIM300 {
 public:
 	GSMSIM300(const char *pinCode, uint8_t rx = 2, uint8_t tx = 3, uint8_t powerPin = 4, bool running = false);
+	~GSMSIM300();
 
 	void begin(uint32_t baud = 9600);
 	void update();

@@ -49,6 +49,10 @@ newSms(false)
     callState = CALL_IDLE;
 }
 
+GSMSIM300::~GSMSIM300() {
+    delete gsm;
+}
+
 void GSMSIM300::begin(uint32_t baud /*= 9600*/) {
     gsm->begin(baud); // You can try to set this higher, but 9600 should work
 }
