@@ -21,6 +21,7 @@ const char *GSMSIM300::receiveSmsString = "+CMTI: \"SM\","; // +CMTI: "SM",index
 const char *GSMSIM300::incomingCallString = "RING";
 const char *GSMSIM300::hangupCallString = "NO CARRIER";
 const char *GSMSIM300::powerDownString = "NORMAL POWER DOWN";
+const char *GSMSIM300::errorString = "+CME ERROR:"; // +CME ERROR: <err>
 
 // TODO: Remove all delays
 
@@ -31,6 +32,7 @@ pReceiveSmsString((char*)receiveSmsString),
 pIncomingCallString((char*)incomingCallString),
 pHangupCallString((char*)hangupCallString),
 pPowerDownString((char*)powerDownString),
+pErrorString((char*)errorString),
 pGsmString(gsmString),
 pOutString(outString),
 readIndex(false),
@@ -65,7 +67,22 @@ void GSMSIM300::update() {
 #endif
     if (checkString(incomingChar,powerDownString,&pPowerDownString)) {
 #ifdef DEBUG
-        Serial.println(F("GSM Module turned off"));
+        Serial.println(F("GSM module turned off"));
+#endif
+        gsmState = GSM_POWER_ON;
+    }
+    if (checkString(incomingChar,errorString,&pErrorString)) {
+        char error[5], i = 0;
+        do {
+            error[i] = gsm->read();
+            if (error[i] != -1 && error[i] != ' ')
+                i++;
+        } while (error[i] != '\r' && error[i] != '\0' && i < sizeof(error)-1);
+        error[i] = '\0';
+
+#ifdef DEBUG
+        Serial.print(F("The GSM module returned the following error: "));
+        Serial.println(error);
 #endif
         gsmState = GSM_POWER_ON;
     }

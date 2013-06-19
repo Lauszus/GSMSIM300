@@ -222,10 +222,10 @@ private:
 	const uint8_t powerPin;
 
 	/** Sentences to look for in the incoming characters sent from the GSM module. */
-	static const char *receiveSmsString, *incomingCallString, *hangupCallString, *powerDownString;
+	static const char *receiveSmsString, *incomingCallString, *hangupCallString, *powerDownString, *errorString;
 
 	/** Pointers to the sentence to look for. */
-	char *pReceiveSmsString, *pIncomingCallString, *pHangupCallString, *pPowerDownString;
+	char *pReceiveSmsString, *pIncomingCallString, *pHangupCallString, *pPowerDownString, *pErrorString;
 
 	/** Last incoming character received from the GSM module. */
 	char incomingChar;
