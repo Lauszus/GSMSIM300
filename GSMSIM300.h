@@ -60,7 +60,7 @@
 #define CALL_RESPONSE             4
 #define CALL_ACTIVE               5
 
-/** The GSMSIM300 class is able to call and answer calls, send messages and receive messages and some other useful futures. */
+/** The GSMSIM300 class is able to call and answer calls, send messages and receive messages and some other useful features. */
 class GSMSIM300 {
 public:
 	/**
