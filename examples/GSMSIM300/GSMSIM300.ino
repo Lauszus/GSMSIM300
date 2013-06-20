@@ -11,7 +11,7 @@ GSMSIM300 GSM(pinCode,2,3,4); // Pin code, rx, tx, power pin
 
 void setup() {
   Serial.begin(115200);
-  GSM.begin(28800); // I have found this baud rate to work pretty well with my module
+  GSM.begin(9600); // Start the GSM library
   
   Serial.println(F("GSMSIM300 library is running!"));
 }
