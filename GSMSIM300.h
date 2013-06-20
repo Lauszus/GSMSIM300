@@ -134,9 +134,8 @@ public:
 	/**
 	 * List all messages stored on the SIM card.
 	 * @param type  Available ones are: "REC UNREAD", "REC READ", "STO UNSENT", "STO SENT", and "ALL". Default to "ALL".
-	 * @param print Set this to false if you do not want the messages to be printed in the terminal. This is useful when debugging.
 	 */
-	void listSMS(const char *type = "ALL", bool print = true);
+	void listSMS(const char *type = "ALL");
 
 	/**
 	 * Used to get the state of the GSM module.

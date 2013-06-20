@@ -444,41 +444,39 @@ void GSMSIM300::answer() {
     callState = CALL_ACTIVE;
 }
 
-void GSMSIM300::listSMS(const char *type, bool print) {
+void GSMSIM300::listSMS(const char *type) {
     setSMSTextMode();
     gsm->print(F("AT+CMGL=\""));
     gsm->print(type);
     gsm->print(F("\"\r"));
 
 #ifdef DEBUG
-    if (print) {
-        // Returned as:
-        // +CMGL: 1,"REC READ","number",,"13/06/16,15:01:58+08"
-        // Content
+    // Returned as:
+    // +CMGL: 1,"REC READ","number",,"13/06/16,15:01:58+08"
+    // Content
+    
+    uint32_t startTime;
+    const char *header = "+CMGL:";
+    char *pHeader = (char*)header;
 
-        uint32_t startTime;
-        const char *header = "+CMGL:";
-        char *pHeader = (char*)header;
-
-        while (1) {
-            startTime = millis();
-            while (!checkString(gsm->read(),header,&pHeader)) {
-                if (millis() - startTime > 1000)
-                    return;
-            }
-            while (gsm->read() != ',') {
-                if (millis() - startTime > 1000)
-                    return;
-            }
-
-            if (extractContent(numberIn, sizeof(numberIn), ',', '"', 1) && extractContent(messageIn, sizeof(messageIn), '\n', '\r', 0)) {
-                Serial.print(F("Received: \""));
-                Serial.print(messageIn);
-                Serial.print(F("\" From: "));
-                Serial.println(numberIn);
-            } else
+    while (1) {
+        startTime = millis();
+        while (!checkString(gsm->read(),header,&pHeader)) {
+            if (millis() - startTime > 1000)
                 return;
         }
+        while (gsm->read() != ',') {
+            if (millis() - startTime > 1000)
+                return;
+        }
+
+        if (extractContent(numberIn, sizeof(numberIn), ',', '"', 1) && extractContent(messageIn, sizeof(messageIn), '\n', '\r', 0)) {
+            Serial.print(F("Received: \""));
+            Serial.print(messageIn);
+            Serial.print(F("\" From: "));
+            Serial.println(numberIn);
+        } else
+            return;
     }
 #endif
 }
