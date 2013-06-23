@@ -13,16 +13,17 @@ GSMSIM300	KEYWORD1
 ####################################################
 begin	KEYWORD2
 update	KEYWORD2
-checkSMS	KEYWORD2
-newSMS	KEYWORD2
+
 call	KEYWORD2
 hangup	KEYWORD2
+
+newSMS	KEYWORD2
 sendSMS	KEYWORD2
 readSMS	KEYWORD2
 deleteSMS	KEYWORD2
-deleteAllSMS	KEYWORD2
 deleteSMSAll	KEYWORD2
 listSMS	KEYWORD2
+
 getState	KEYWORD2
 setState	KEYWORD2
 
