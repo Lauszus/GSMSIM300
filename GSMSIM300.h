@@ -187,8 +187,7 @@ private:
 	void setOutWaitingString(const char *str);
 
 	/** Used to check if the desired string has been received. */
-	bool checkGsmWaitingString();
-	bool checkOutWaitingString();
+	bool checkWaitingString(char input, const char *str, char **pStr);
 
 	/**
 	 * Used to check if a specific sentence has been received.
