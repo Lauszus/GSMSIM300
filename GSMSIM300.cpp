@@ -74,7 +74,7 @@ void GSMSIM300::update() {
     if (checkString(incomingChar,errorString,&pErrorString)) {
 #ifdef DEBUG
         char error[5], i = 0;
-        while (i < sizeof(error)-1) {
+        while (i < sizeof(error)-1) { // TODO: Check time
             error[i] = gsm->read();
             if (error[i] == '\r' || error[i] == '\n' || error[i] == '\0')
                 break;
@@ -247,7 +247,7 @@ bool GSMSIM300::checkString(char input, const char *cmpString, char **pString) {
 void GSMSIM300::updateSMS() {
     switch(smsState) {
         case SMS_IDLE:
-        break;
+            break;
 
         case SMS_MODE:
 #ifdef DEBUG
