@@ -527,15 +527,12 @@ bool GSMSIM300::readSMS(char *index) {
     gsm->print(index);
     gsm->print(F("\r"));
 
-    bool numberFound = false;
-    bool messageFound = false;
-
     // Read the sender's number and the message. The SMS is returned as:
     // +CMGR: "REC UNREAD","number",,"date"
     // message
 
-    numberFound = extractContent(numberIn, sizeof(numberIn), ',', '"', 1);
-    messageFound = extractContent(messageIn, sizeof(messageIn), '\n', '\r', 0); // TODO: Take care of new line in a message
+    bool numberFound = extractContent(numberIn, sizeof(numberIn), ',', '"', 1);
+    bool messageFound = extractContent(messageIn, sizeof(messageIn), '\n', '\r', 0); // TODO: Take care of new line in a message
 #ifdef DEBUG
     if (numberFound) {
         Serial.print(F("Extracted the following number: "));
