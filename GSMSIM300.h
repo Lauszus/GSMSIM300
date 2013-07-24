@@ -25,10 +25,17 @@
 #endif
 
 /**
- * Communication with the GSM module is done via software implementation of the UART protocol.
- * You might have to increase the RX buffer in order to be able to the listSMS function.
+ * Communication with the GSM module is done via UART.
+ * Either by using the hardware UART on the Arduino by uncommenting the line below or
+ * The software implementation of the UART protocol - this is the default.
+ * You might have to increase the RX buffer in the SoftwareSerial library in order to be able to use the listSMS function.
  */
+
+//#define HARDWARE_SERIAL Serial1 // You can change this to any of the instances: Serial, Serial1, Serial2 etc.
+
+#ifndef HARDWARE_SERIAL
 #include <SoftwareSerial.h>
+#endif
 
 #define DEBUG // Print serial debugging
 //#define EXTRADEBUG // Print every character received from the GSM module
@@ -75,7 +82,7 @@ public:
 	 */
 	GSMSIM300(const char *pinCode, uint8_t rx = 2, uint8_t tx = 3, uint8_t powerPin = 4, bool running = false);
 
-	/** Destructor for the library. This will take care of freeing the SoftwareSerial instance. */
+	/** Destructor for the library. This will take care of freeing the instance. */
 	~GSMSIM300();
 
 	/**
@@ -159,8 +166,16 @@ public:
 	/** Buffer for the last ingoing and outgoing message. */
 	char messageIn[161], messageOut[161];
 private:
-	/** Pointer to the SoftwareSerial instance allocated dynamically. */
+	
+	/**
+	 * Pointer to the serial instance. Either the Hardware UART or the software implementation is used.
+	 * The SoftwareSerial instance is allocated dynamically.
+	 */
+#ifdef HARDWARE_SERIAL
+	HardwareSerial *gsm;
+#else
 	SoftwareSerial *gsm;
+#endif
 
 	/** Used by the library to check for ingoing messages. */
 	void checkSMS();

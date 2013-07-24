@@ -41,7 +41,12 @@ newSms(false)
     pinMode(powerPin,OUTPUT);
     digitalWrite(powerPin,HIGH);
 
-    gsm = new SoftwareSerial(rx, tx);
+#ifdef HARDWARE_SERIAL
+    gsm = &HARDWARE_SERIAL; // Pointer to the hardware UART
+#else
+    gsm = new SoftwareSerial(rx, tx); // Create the software UART instance
+#endif
+
     if (running)
         gsmState = GSM_RUNNING;
     else
