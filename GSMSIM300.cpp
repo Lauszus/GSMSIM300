@@ -62,7 +62,7 @@ void GSMSIM300::begin(uint32_t baud /*= 9600*/) {
 void GSMSIM300::update() {
     incomingChar = gsm->read();
 #ifdef EXTRADEBUG
-    if(incomingChar != -1)
+    if (incomingChar != -1)
         Serial.write(incomingChar);
 #endif
     if (checkString(incomingChar,powerDownString,&pPowerDownString)) {
@@ -108,7 +108,7 @@ void GSMSIM300::update() {
             break;
 
         case GSM_POWER_ON_WAIT:
-            if(checkWaitingString(incomingChar,gsmString,&pGsmString)) {
+            if (checkWaitingString(incomingChar,gsmString,&pGsmString)) {
 #ifdef DEBUG
                 Serial.println(F("GSM Module is powered on\r\nChecking SIM Card"));
 #endif
@@ -121,7 +121,7 @@ void GSMSIM300::update() {
             break;
         
       	case GSM_SET_PIN:
-            if(checkWaitingString(incomingChar,gsmString,&pGsmString)) {
+            if (checkWaitingString(incomingChar,gsmString,&pGsmString)) {
 #ifdef DEBUG
                 Serial.println(F("SIM Card ready"));
                 Serial.print(F("Waiting for GSM to get ready"));
@@ -142,17 +142,17 @@ void GSMSIM300::update() {
             break;
 
         case GSM_CHECK_CONNECTION_WAIT:
-            if(checkWaitingString(incomingChar,gsmString,&pGsmString))
+            if (checkWaitingString(incomingChar,gsmString,&pGsmString))
                 gsmState = GSM_CONNECTION_RESPONSE;
             break;
 
         case GSM_CONNECTION_RESPONSE:
-            if(incomingChar != -1) {
+            if (incomingChar != -1) {
 #ifdef EXTRADEBUG
                 Serial.print(F("\r\nConnection response: "));
                 Serial.print(incomingChar);
 #endif
-                if(incomingChar != '1') {
+                if (incomingChar != '1') {
                     delay(1000);
                     gsmState = GSM_CHECK_CONNECTION;
                 } else {
@@ -186,7 +186,7 @@ void GSMSIM300::update() {
             break;
 
         case GSM_POWER_OFF_WAIT:
-            if(checkWaitingString(incomingChar,gsmString,&pGsmString)) {
+            if (checkWaitingString(incomingChar,gsmString,&pGsmString)) {
                 powerOff();
 #ifdef DEBUG
                 Serial.println(F("GSM PowerOff"));
@@ -259,7 +259,7 @@ void GSMSIM300::updateSMS() {
             break;
 
         case SMS_ALPHABET:
-            if(checkWaitingString(incomingChar,outString,&pOutString)) {
+            if (checkWaitingString(incomingChar,outString,&pOutString)) {
 #ifdef DEBUG
                 Serial.println(F("SMS setting alphabet"));
 #endif
@@ -270,7 +270,7 @@ void GSMSIM300::updateSMS() {
             break;
 
         case SMS_NUMBER:
-            if(checkWaitingString(incomingChar,outString,&pOutString)) {
+            if (checkWaitingString(incomingChar,outString,&pOutString)) {
 #ifdef DEBUG
                 Serial.print(F("Number: "));
                 Serial.println(numberOut);
@@ -284,7 +284,7 @@ void GSMSIM300::updateSMS() {
             break;
 
         case SMS_CONTENT:
-            if(checkWaitingString(incomingChar,outString,&pOutString)) {
+            if (checkWaitingString(incomingChar,outString,&pOutString)) {
 #ifdef DEBUG
                 Serial.print(F("Message: \""));
                 Serial.print(messageOut);
@@ -298,7 +298,7 @@ void GSMSIM300::updateSMS() {
             break;
 
         case SMS_WAIT:
-            if(checkWaitingString(incomingChar,outString,&pOutString)) {
+            if (checkWaitingString(incomingChar,outString,&pOutString)) {
 #ifdef DEBUG
                 Serial.println(F("SMS is sent"));
 #endif
@@ -342,7 +342,7 @@ void GSMSIM300::updateCall() {
             break;
 
         case CALL_SETUP_WAIT:
-            if(checkWaitingString(incomingChar,outString,&pOutString)) {
+            if (checkWaitingString(incomingChar,outString,&pOutString)) {
 #ifdef EXTRADEBUG
                 Serial.print(F("\r\nGot first response"));
 #endif
@@ -351,12 +351,12 @@ void GSMSIM300::updateCall() {
             break;
 
         case CALL_RESPONSE:
-            if(incomingChar != -1) {
+            if (incomingChar != -1) {
 #ifdef EXTRADEBUG
                 Serial.print(F("\r\nConnection response: "));
                 Serial.print(incomingChar);
 #endif
-                if(incomingChar != '0') {
+                if (incomingChar != '0') {
                     delay(1000);
                     callState = CALL_SETUP;
                 } else {
@@ -403,7 +403,7 @@ bool GSMSIM300::checkWaitingString(char input, const char *str, char **pStr) {
 #endif
         return true;
     }
-    if(millis() - gsmTimer > 10000) { // Only wait 10s for response
+    if (millis() - gsmTimer > 10000) { // Only wait 10s for response
 #ifdef DEBUG
         Serial.println("\r\nNo response from GSM module\r\nResetting...");
 #endif
@@ -556,7 +556,7 @@ bool GSMSIM300::extractContent(char *buffer, uint8_t size, char beginChar, char 
             return false;
     }
 
-    while(offset) { // Offset from beginChar to the actual string
+    while (offset) { // Offset from beginChar to the actual string
         if (gsm->read() != -1)
             offset--;
         if (millis() - startTime > 1000)
