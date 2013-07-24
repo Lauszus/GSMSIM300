@@ -371,7 +371,7 @@ void GSMSIM300::updateCall() {
         case CALL_ACTIVE:
             if (checkString(incomingChar,hangupCallString,&pHangupCallString)) {
 #ifdef DEBUG
-                Serial.println(F("Call hangup!"));
+                Serial.println(F("Call hangup"));
 #endif
                 callState = CALL_IDLE;
             }
@@ -422,7 +422,7 @@ void GSMSIM300::call(const char *num) {
 void GSMSIM300::hangup() {
     gsm->print(F("ATH\r")); // Response: 'OK'
 #ifdef DEBUG
-    Serial.println(F("Call hangup!"));
+    Serial.println(F("Call hangup"));
 #endif
     callState = CALL_IDLE;
 }
@@ -430,6 +430,9 @@ void GSMSIM300::hangup() {
 void GSMSIM300::answer() {
     gsm->print(F("ATA\r"));
     callState = CALL_ACTIVE;
+#ifdef DEBUG
+    Serial.println(F("\r\nCall active"));
+#endif
 }
 
 void GSMSIM300::listSMS(const char *type) {

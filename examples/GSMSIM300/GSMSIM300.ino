@@ -1,13 +1,14 @@
 #include <GSMSIM300.h>
-#include <SoftwareSerial.h> // Please increase rx buffer to 256
+#include <SoftwareSerial.h> // Please increase RX buffer to 256
 
-const char* pinCode = "1234"; // Set this to your pin code
-const char* number = "0123456789"; // Set this to the desired phone number
+const char *pinCode = "1234"; // Set this to your pin code
+const char *number = "0123456789"; // Set this to the desired phone number
 
-// The constructor below will start a SoftwareSerial connection on the chosen rx and tx pins
+// The constructor below will by default start a SoftwareSerial connection on the chosen RX and TX pins
+// The hardware UART can be used instead by uncommenting HARDWARE_SERIAL in GSMSIM300.h
 // The power pin is connected to the status pin on the module
 // Letting the microcontroller turn the module on and off
-GSMSIM300 GSM(pinCode,2,3,4); // Pin code, rx, tx, power pin
+GSMSIM300 GSM(pinCode,2,3,4); // Pin code, RX, TX, power pin
 
 void setup() {
   Serial.begin(115200);
