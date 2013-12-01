@@ -124,7 +124,7 @@ void GSMSIM300::update() {
                 gsmState = GSM_SET_PIN;
             }
             break;
-        
+
       	case GSM_SET_PIN:
             if (checkWaitingString(incomingChar,gsmString,&pGsmString)) {
 #ifdef DEBUG
@@ -134,7 +134,7 @@ void GSMSIM300::update() {
                 gsmState = GSM_CHECK_CONNECTION;
             }
             break;
-            
+
         case GSM_CHECK_CONNECTION:
 #if defined(DEBUG) && !defined(EXTRADEBUG)
             Serial.print(F("."));
@@ -450,7 +450,7 @@ void GSMSIM300::listSMS(const char *type) {
     // Returned as:
     // +CMGL: 1,"REC READ","number",,"13/06/16,15:01:58+08"
     // Content
-    
+
     uint32_t startTime;
     const char *header = "+CMGL:";
     char *pHeader = (char*)header;
@@ -557,7 +557,7 @@ bool GSMSIM300::readSMS(char *index) {
 // TODO: Replace with Stream implementation
 bool GSMSIM300::extractContent(char *buffer, uint8_t size, char beginChar, char endChar, uint8_t offset) {
     uint32_t startTime = millis();
-    int8_t i = 0;  
+    int8_t i = 0;
 
     while (gsm->read() != beginChar) {
         if (millis() - startTime > 1000)
@@ -608,7 +608,7 @@ void GSMSIM300::powerOn() {
     delay(2000);
 }
 
-void GSMSIM300::powerOff() {  
+void GSMSIM300::powerOff() {
     digitalWrite(powerPin,LOW);
     delay(800);
     digitalWrite(powerPin,HIGH);

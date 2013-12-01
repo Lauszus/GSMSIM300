@@ -129,7 +129,7 @@ public:
 	 * Used to delete a SMS at a specific index. If no index is set the last received SMS will be read.
 	 * @param index SMS index to delete. If argument is omitted then the last received SMS will be read.
 	 */
-	
+
 	void deleteSMS(char *index = NULL);
 
 	/**
@@ -166,7 +166,7 @@ public:
 	/** Buffer for the last ingoing and outgoing message. */
 	char messageIn[161], messageOut[161];
 private:
-	
+
 	/**
 	 * Pointer to the serial instance. Either the Hardware UART or the software implementation is used.
 	 * The SoftwareSerial instance is allocated dynamically.
@@ -223,7 +223,7 @@ private:
 	 * @return           Returns true if the content is successfully extracted.
 	 */
 	bool extractContent(char *buffer, uint8_t size, char beginChar, char endChar, uint8_t offset);
-	
+
 	/** Used by the library to automatically pick up incoming calls. */
 	void answer();
 
@@ -256,19 +256,19 @@ private:
 	uint32_t gsmTimer;
 
 	/** State variables for the states machines. */
-	uint8_t gsmState, smsState, callState;	
+	uint8_t gsmState, smsState, callState;
 
 	/** Buffer for last index received. */
 	char lastIndex[5];
 
 	/** Counter used to extract index from a received SMS. */
 	uint8_t indexCounter;
-	
+
 	/** Bool used to check when it should start reading the index. */
 	bool readIndex;
 
 	/** True if a new SMS has been received, but not yet read. */
-	bool newSms;	
+	bool newSms;
 };
 
 #endif
