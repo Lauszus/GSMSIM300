@@ -24,19 +24,6 @@
 #include <WProgram.h>
 #endif
 
-/**
- * Communication with the GSM module is done via UART.
- * Either by using the hardware UART on the Arduino by uncommenting the line below or
- * The software implementation of the UART protocol - this is the default.
- * You might have to increase the RX buffer in the SoftwareSerial library in order to be able to use the listSMS function.
- */
-
-//#define HARDWARE_SERIAL Serial1 // You can change this to any of the instances: Serial, Serial1, Serial2 etc.
-
-#ifndef HARDWARE_SERIAL
-#include <SoftwareSerial.h>
-#endif
-
 #define DEBUG // Print serial debugging
 //#define EXTRADEBUG // Print every character received from the GSM module
 
@@ -72,24 +59,14 @@ class GSMSIM300 {
 public:
 	/**
 	 * Constructor for the library.
+	 * @param p        Pointer to Stream instance.
 	 * @param pinCode  Pin code for the SMS card.
-	 * @param rx       Receive pin to use with SoftwareSerial library. If argument is omitted then it will be set to 2.
-	 * @param tx       Transmit pin to use with SoftwareSerial library. If argument is omitted then it will be set to 3.
 	 * @param powerPin Power pin used to turn the GSM module on and off. This should be connected to the status pin on the module.
 	 *                 If argument is omitted then it will be set to 4.
 	 * @param running  Set this to true to if the GSM module is already powered on and configured. Useful when developing.
 	 *                 If argument is omitted then it will be set to false.
 	 */
-	GSMSIM300(const char *pinCode, uint8_t rx = 2, uint8_t tx = 3, uint8_t powerPin = 4, bool running = false);
-
-	/** Destructor for the library. This will take care of freeing the instance. */
-	~GSMSIM300();
-
-	/**
-	 * Call this to start the serial communication with the GSM module.
-	 * @param baud Desired baud rate to use.
-	 */
-	void begin(uint32_t baud = 9600);
+	GSMSIM300(Stream *p, const char *pinCode, uint8_t powerPin = 4, bool running = false);
 
 	/** Used to update the state machine in the library. */
 	void update();
@@ -167,15 +144,8 @@ public:
 	char messageIn[161], messageOut[161];
 private:
 
-	/**
-	 * Pointer to the serial instance. Either the Hardware UART or the software implementation is used.
-	 * The SoftwareSerial instance is allocated dynamically.
-	 */
-#ifdef HARDWARE_SERIAL
-	HardwareSerial *gsm;
-#else
-	SoftwareSerial *gsm;
-#endif
+	/** Pointer to the serial instance. */
+	Stream *gsm;
 
 	/** Used by the library to check for ingoing messages. */
 	void checkSMS();

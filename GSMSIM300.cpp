@@ -25,7 +25,8 @@ const char *GSMSIM300::errorString = "+CME ERROR:"; // +CME ERROR: <err>
 
 // TODO: Remove all delays
 
-GSMSIM300::GSMSIM300(const char *pinCode, uint8_t rx /*= 2*/, uint8_t tx /*= 3*/, uint8_t powerPin /*= 4*/, bool running /*= false*/) :
+GSMSIM300::GSMSIM300(Stream *p, const char *pinCode, uint8_t powerPin /*= 4*/, bool running /*= false*/) :
+gsm(p),
 pinCode(pinCode),
 powerPin(powerPin),
 pReceiveSmsString((char*)receiveSmsString),
@@ -36,16 +37,9 @@ pErrorString((char*)errorString),
 pGsmString(gsmString),
 pOutString(outString),
 readIndex(false),
-newSms(false)
-{
+newSms(false) {
     pinMode(powerPin,OUTPUT);
     digitalWrite(powerPin,HIGH);
-
-#ifdef HARDWARE_SERIAL
-    gsm = &HARDWARE_SERIAL; // Pointer to the hardware UART
-#else
-    gsm = new SoftwareSerial(rx, tx); // Create the software UART instance
-#endif
 
     if (running)
         gsmState = GSM_RUNNING;
@@ -54,14 +48,6 @@ newSms(false)
 
     smsState = SMS_IDLE;
     callState = CALL_IDLE;
-}
-
-GSMSIM300::~GSMSIM300() {
-    delete gsm;
-}
-
-void GSMSIM300::begin(uint32_t baud /*= 9600*/) {
-    gsm->begin(baud); // You can try to set this higher, but 9600 should work
 }
 
 void GSMSIM300::update() {
@@ -78,7 +64,8 @@ void GSMSIM300::update() {
     }
     if (checkString(incomingChar,errorString,&pErrorString)) {
 #ifdef DEBUG
-        char error[5], i = 0;
+        char error[5];
+        uint8_t i = 0;
         while (i < sizeof(error)-1) { // TODO: Check time
             error[i] = gsm->read();
             if (error[i] == '\r' || error[i] == '\n' || error[i] == '\0')
