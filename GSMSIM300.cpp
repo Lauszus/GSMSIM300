@@ -117,11 +117,17 @@ void GSMSIM300::update() {
 #ifdef DEBUG
                 Serial.println(F("GSM Module is powered on\r\nChecking SIM Card"));
 #endif
-                gsm->print(F("AT+CPIN="));
-                gsm->print(pinCode); // Set pin
-                gsm->print(F("\r"));
-                setGsmWaitingString("Call Ready");
-                gsmState = GSM_SET_PIN;
+                if (pinCode) {
+                    gsm->print(F("AT+CPIN="));
+                    gsm->print(pinCode); // Set pin
+                    gsm->print(F("\r"));
+                    setGsmWaitingString("Call Ready");
+                    gsmState = GSM_SET_PIN;
+                } else { // Do not use a pin code
+                    gsm->print(F("AT+CPIN?\r"));
+                    setGsmWaitingString("+CPIN: READY");
+                    gsmState = GSM_SET_PIN;
+                }
             }
             break;
 
@@ -157,7 +163,7 @@ void GSMSIM300::update() {
                 Serial.print(F("\r\nConnection response: "));
                 Serial.print(incomingChar);
 #endif
-                if (incomingChar != '1') {
+                if (incomingChar != '1' && incomingChar != '5') {
                     delay(1000);
                     gsmState = GSM_CHECK_CONNECTION;
                 } else {

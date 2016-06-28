@@ -1,19 +1,22 @@
 #include <GSMSIM300.h>
 #include <SoftwareSerial.h> // Please increase RX buffer to 256
 
-const char *pinCode = "1234"; // Set this to your pin code
+const char *pinCode = "1234"; // Set this to your pin code - set to NULL if no pin is used
 const char *number = "0123456789"; // Set this to the desired phone number
 
-// The constructor below will by default start a SoftwareSerial connection on the chosen RX and TX pins
-// The hardware UART can be used instead by uncommenting HARDWARE_SERIAL in GSMSIM300.h
+SoftwareSerial gsmSerial(2, 3); // RX, TX
+
 // The power pin is connected to the status pin on the module
 // Letting the microcontroller turn the module on and off
-GSMSIM300 GSM(pinCode,2,3,4); // Pin code, RX, TX, power pin
+GSMSIM300 GSM(&gsmSerial, pinCode, 4); // Pointer to serial instance, pin code, power pin
+
+// You can also use a Hardware UART if you like:
+//GSMSIM300 GSM(&Serial1, pinCode, 4); // Pointer to serial instance, pin code, power pin
 
 void setup() {
   Serial.begin(115200);
-  GSM.begin(9600); // Start the GSM library
-  
+  gsmSerial.begin(9600); // Start the communication with the GSM module
+  while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
   Serial.println(F("GSMSIM300 library is running!"));
 }
 
@@ -36,8 +39,10 @@ void loop() {
         GSM.deleteSMSAll(); // Deletes all messages on the SIM card - this is useful as the SIM card has very limited storage capability
     }
     if (GSM.newSMS()) { // Check if a new SMS is received
-      if (GSM.readSMS()) // Returns true if the number and message of the sender is successfully extracted from the SMS
+      if (GSM.readSMS()) { // Returns true if the number and message of the sender is successfully extracted from the SMS
         GSM.sendSMS(GSM.numberIn, "Automatic response from SIM300 GSM module"); // Sends a response to that number
+        Serial.println(GSM.messageIn);
+      }
       GSM.deleteSMS(); // Delete the SMS again, as the SIM card has very limited storage capability
     }
   }
